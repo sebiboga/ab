@@ -85,10 +85,10 @@ Apache Bench
 - **-X proxy[:port]**  
   Use a proxy server for the requests.
 
-- **-y <tr>-attributes**  
+- **-y \<tr>-attributes**  
   String to use as attributes for `<tr>`.
 
-- **-z <td>-attributes**  
+- **-z \<td>-attributes**  
   String to use as attributes for `<td>`.
 
 - **-Z ciphersuite**  
