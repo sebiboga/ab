@@ -5,13 +5,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: install Apache Bench
+      - name: Install Apache Bench
         run: |
           sudo apt-get update
-          sudo apt-get install apache2-utils
+          sudo apt-get install -y apache2-utils
 
-      - name: Apache Bench version
+      - name: Check Apache Bench version
         run: |
           ab -V
+
       - name: Performance Testing
+        run: |
           ab -n 5 -c 3 http://peviitor.ro/
