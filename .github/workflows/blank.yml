@@ -1,4 +1,4 @@
-name: CI
+name: Performance Testing with Apache Bench
 on:
   workflow_dispatch:
 jobs:
