@@ -29,5 +29,16 @@ jobs:
           ab -V
 
       - name: Performance Testing
+        id: perf_test
         run: |
-          ab -n ${{ github.event.inputs.n }} -c ${{ github.event.inputs.c }} ${{ github.event.inputs.url }}
+          ab -n ${{ github.event.inputs.n }} -c ${{ github.event.inputs.c }} ${{ github.event.inputs.url }} > results.txt 2>&1
+
+      - name: Display Results
+        run: |
+          cat results.txt
+
+      - name: Upload Results as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance-results
+          path: results.txt
