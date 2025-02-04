@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       t:
-        description: 'Number of requests'
+        description: 'run-time (sec)'
         required: true
-        default: '5'
+        default: '900'
       c:
         description: 'Workload'
         required: true
