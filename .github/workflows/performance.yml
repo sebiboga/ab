@@ -13,7 +13,7 @@ on:
       url:
         description: 'Target URL for testing'
         required: true
-        default: 'http://peviitor.ro/'
+        default: 'https://peviitor.ro/'
 
 jobs:
   build:
