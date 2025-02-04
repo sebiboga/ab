@@ -13,4 +13,5 @@ jobs:
       - name: Apache Bench version
         run: |
           ab -V
+      - name: Performance Testing
           ab -n 5 -c 3 http://peviitor.ro/
