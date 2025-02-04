@@ -2,7 +2,7 @@ name: Performance Testing with Apache Bench
 on:
   workflow_dispatch:
     inputs:
-      n:
+      t:
         description: 'Number of requests'
         required: true
         default: '5'
@@ -31,7 +31,7 @@ jobs:
       - name: Performance Testing
         id: perf_test
         run: |
-          ab -n ${{ github.event.inputs.n }} -c ${{ github.event.inputs.c }} ${{ github.event.inputs.url }} > results.txt 2>&1
+          ab -t ${{ github.event.inputs.t }} -c ${{ github.event.inputs.c }} ${{ github.event.inputs.url }} > results.txt 2>&1
 
       - name: Display Results
         run: |
