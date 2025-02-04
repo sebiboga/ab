@@ -1,6 +1,20 @@
 name: Performance Testing with Apache Bench
 on:
   workflow_dispatch:
+    inputs:
+      n:
+        description: 'Number of requests'
+        required: true
+        default: '5'
+      c:
+        description: 'Workload'
+        required: true
+        default: '3'
+      url:
+        description: 'Target URL for testing'
+        required: true
+        default: 'http://peviitor.ro/'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,4 +30,4 @@ jobs:
 
       - name: Performance Testing
         run: |
-          ab -n 5 -c 3 https://peviitor.ro/
+          ab -n ${{ github.event.inputs.n }} -c ${{ github.event.inputs.c }} ${{ github.event.inputs.url }}
