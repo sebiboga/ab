@@ -1,0 +1,16 @@
+name: CI
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install Apache Bench
+        run: |
+          sudo apt-get update
+          sudo apt-get install apache2-utils
+
+      - name: Apache Bench version
+        run: |
+          ab -V
+          ab -n 5 -c 3 http://peviitor.ro/
