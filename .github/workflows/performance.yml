@@ -1,5 +1,10 @@
-name: Performance Testing with Apache Bench
+name: Performance with ApacheBench
+
 on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
     inputs:
       t:
@@ -28,10 +33,21 @@ jobs:
         run: |
           ab -V
 
+      - name: Get current date and time
+        id: date
+        run: echo "DATE=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
       - name: Performance Testing
         id: perf_test
         run: |
-          ab -t ${{ github.event.inputs.t }} -c ${{ github.event.inputs.c }} ${{ github.event.inputs.url }} > results.txt 2>&1
+          echo "Performance Test Results" > results.txt
+          echo "=========================" >> results.txt
+          echo "Test started at: ${{ env.DATE }}" >> results.txt
+          echo "Run time (sec): ${{ github.event.inputs.t }}" >> results.txt
+          echo "Workload (concurrency): ${{ github.event.inputs.c }}" >> results.txt
+          echo "Target URL: ${{ github.event.inputs.url }}" >> results.txt
+          echo "=========================" >> results.txt
+          ab -t ${{ github.event.inputs.t }} -c ${{ github.event.inputs.c }} ${{ github.event.inputs.url }} >> results.txt 2>&1
 
       - name: Display Results
         run: |
