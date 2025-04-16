@@ -1,4 +1,4 @@
-name: Performance with ApacheBench
+name: Performance
 
 on:
   push:
@@ -37,17 +37,32 @@ jobs:
         id: date
         run: echo "DATE=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
 
+      - name: Set test parameters
+        id: params
+        run: |
+          # For workflow_dispatch events
+          if [ -n "${{ github.event.inputs.t }}" ]; then
+            echo "T=${{ github.event.inputs.t }}" >> $GITHUB_ENV
+            echo "C=${{ github.event.inputs.c }}" >> $GITHUB_ENV
+            echo "URL=${{ github.event.inputs.url }}" >> $GITHUB_ENV
+          else
+            # Default values for push/pull_request events
+            echo "T=900" >> $GITHUB_ENV
+            echo "C=3" >> $GITHUB_ENV
+            echo "URL=https://peviitor.ro/" >> $GITHUB_ENV
+          fi
+
       - name: Performance Testing
         id: perf_test
         run: |
           echo "Performance Test Results" > results.txt
           echo "=========================" >> results.txt
           echo "Test started at: ${{ env.DATE }}" >> results.txt
-          echo "Run time (sec): ${{ github.event.inputs.t }}" >> results.txt
-          echo "Workload (concurrency): ${{ github.event.inputs.c }}" >> results.txt
-          echo "Target URL: ${{ github.event.inputs.url }}" >> results.txt
+          echo "Run time (sec): ${{ env.T }}" >> results.txt
+          echo "Workload (concurrency): ${{ env.C }}" >> results.txt
+          echo "Target URL: ${{ env.URL }}" >> results.txt
           echo "=========================" >> results.txt
-          ab -t ${{ github.event.inputs.t }} -c ${{ github.event.inputs.c }} ${{ github.event.inputs.url }} >> results.txt 2>&1
+          ab -t ${{ env.T }} -c ${{ env.C }} "${{ env.URL }}" >> results.txt 2>&1 || echo "AB command completed with exit code $?" >> results.txt
 
       - name: Display Results
         run: |
