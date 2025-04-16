@@ -1,0 +1,85 @@
+name: Performance with AB then upload results.txt
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      t:
+        description: 'run-time (sec)'
+        required: true
+        default: '900'
+      c:
+        description: 'Workload'
+        required: true
+        default: '3'
+      url:
+        description: 'Target URL for testing'
+        required: true
+        default: 'https://peviitor.ro/'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+
+      - name: Install Apache Bench
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apache2-utils
+
+      - name: Check Apache Bench version
+        run: |
+          ab -V
+
+      - name: Get current date and time
+        id: date
+        run: echo "DATE=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Set test parameters
+        id: params
+        run: |
+          if [ -n "${{ github.event.inputs.t }}" ]; then
+            echo "T=${{ github.event.inputs.t }}" >> $GITHUB_ENV
+            echo "C=${{ github.event.inputs.c }}" >> $GITHUB_ENV
+            echo "URL=${{ github.event.inputs.url }}" >> $GITHUB_ENV
+          else
+            echo "T=900" >> $GITHUB_ENV
+            echo "C=3" >> $GITHUB_ENV
+            echo "URL=https://peviitor.ro/" >> $GITHUB_ENV
+          fi
+
+      - name: Performance Testing
+        id: perf_test
+        run: |
+          echo "Performance Test Results" > results.txt
+          echo "=========================" >> results.txt
+          echo "Test started at: ${{ env.DATE }}" >> results.txt
+          echo "Run time (sec): ${{ env.T }}" >> results.txt
+          echo "Workload (concurrency): ${{ env.C }}" >> results.txt
+          echo "Target URL: ${{ env.URL }}" >> results.txt
+          echo "=========================" >> results.txt
+          ab -t ${{ env.T }} -c ${{ env.C }} "${{ env.URL }}" >> results.txt 2>&1 || echo "AB command completed with exit code $?" >> results.txt
+
+      - name: Display Results
+        run: |
+          cat results.txt
+
+      - name: Upload Results as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-results
+          path: results.txt
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Add performance test results [skip ci]"
+          file_pattern: results.txt
