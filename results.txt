@@ -1,8 +1,8 @@
 Performance Test Results
 =========================
-Test started at: 2025-04-17 13:52:54
-Run time (sec): 3600
-Workload (concurrency): 2
+Test started at: 2025-04-25 13:03:53
+Run time (sec): 900
+Workload (concurrency): 3
 Target URL: https://peviitor.ro/
 =========================
 This is ApacheBench, Version 2.3 <$Revision: 1903618 $>
@@ -33,31 +33,31 @@ TLS Server Name:        peviitor.ro
 Document Path:          /
 Document Length:        981 bytes
 
-Concurrency Level:      2
-Time taken for tests:   197.230 seconds
+Concurrency Level:      3
+Time taken for tests:   422.639 seconds
 Complete requests:      50000
 Failed requests:        0
-Total transferred:      83639154 bytes
+Total transferred:      83670209 bytes
 HTML transferred:       49050000 bytes
-Requests per second:    253.51 [#/sec] (mean)
-Time per request:       7.889 [ms] (mean)
-Time per request:       3.945 [ms] (mean, across all concurrent requests)
-Transfer rate:          414.13 [Kbytes/sec] received
+Requests per second:    118.30 [#/sec] (mean)
+Time per request:       25.358 [ms] (mean)
+Time per request:       8.453 [ms] (mean, across all concurrent requests)
+Transfer rate:          193.33 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        3    5   4.9      5    1020
-Processing:     2    3   1.4      3     117
-Waiting:        2    3   1.4      3     116
-Total:          5    8   5.3      7    1023
+Connect:       12   14   4.7     13     740
+Processing:    11   12   2.4     11     212
+Waiting:       11   12   2.4     11     212
+Total:         23   25   5.4     24     765
 
 Percentage of the requests served within a certain time (ms)
-  50%      7
-  66%      8
-  75%      8
-  80%      8
-  90%      9
-  95%     11
-  98%     13
-  99%     16
- 100%   1023 (longest request)
+  50%     24
+  66%     25
+  75%     25
+  80%     26
+  90%     29
+  95%     32
+  98%     35
+  99%     36
+ 100%    765 (longest request)
